@@ -1,8 +1,5 @@
 package com.ci123.advance.sl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Copyright (c) 2018-2028 Corp-ci All Rights Reserved
  * <p>
@@ -14,14 +11,6 @@ import java.util.List;
  */
 public class Singleton {
     public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        list.add("AA");
-        list.add("BB");
-        list.add("CC");
-
-        String[] strings = list.toArray(new String[list.size()]);
-
-
 
     }
 }
