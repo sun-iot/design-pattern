@@ -1,4 +1,4 @@
-package com.ci123.advance.sl;
+package com.ci123.advance.single;
 
 /**
  * Copyright (c) 2018-2028 Corp-ci All Rights Reserved
@@ -20,37 +20,43 @@ public class Singleton {
  * 饿汉式（静态变量）
  * 1. 优点： 写法简单，就是在类装载的时候完成实例化。避免了线程同步问题
  * 2. 缺点：
- *    （1） 在类装载的时候完成实例化，没有达到 Lazy Loading 的效果。如果从未使用过这个实例，则会造成内存浪费
- *    （2） 这种方法基于 classloader 机制避免了多线程的同步问题，不过，instance在类装载时就实例化，在单例模式中大多数都是调用
- *    getInstance()方法。但是导致类装载的原因有很多种，因此不能确定有其他方式（或者其他的静态方法）导致类装载，这时候初始化 instance
- *    就没有达到 Lazy Loading 的效果
- *
+ * （1） 在类装载的时候完成实例化，没有达到 Lazy Loading 的效果。如果从未使用过这个实例，则会造成内存浪费
+ * （2） 这种方法基于 classloader 机制避免了多线程的同步问题，不过，instance在类装载时就实例化，在单例模式中大多数都是调用
+ * getInstance()方法。但是导致类装载的原因有很多种，因此不能确定有其他方式（或者其他的静态方法）导致类装载，这时候初始化 instance
+ * 就没有达到 Lazy Loading 的效果
  */
-class Singleton01{
+class Singleton01 {
     // 1. 构造器私有化，外部不能用 new
-    private Singleton01(){}
+    private Singleton01() {
+    }
+
     // 2. 本类内部创建对象实例
-    private final static Singleton01 instance = new Singleton01() ;
+    private final static Singleton01 instance = new Singleton01();
+
     // 3. 提供一个公有的静态方法，返回实例对象
-    public static Singleton01 getInstance(){
-        return instance ;
+    public static Singleton01 getInstance() {
+        return instance;
     }
 }
 
 /**
  * 饿汉式（静态代码块）
  */
-class Singleton02{
+class Singleton02 {
     // 1. 构造器私有化，外部不能用 new
-    private Singleton02(){}
-    // 2. 本类内部创建对象实例
-    private final static Singleton02 instance ;
-    static {
-        instance = new Singleton02() ;
+    private Singleton02() {
     }
+
+    // 2. 本类内部创建对象实例
+    private final static Singleton02 instance;
+
+    static {
+        instance = new Singleton02();
+    }
+
     // 3. 提供一个公有的静态方法，返回实例对象
-    public static Singleton02 getInstance(){
-        return instance ;
+    public static Singleton02 getInstance() {
+        return instance;
     }
 }
 
@@ -59,16 +65,19 @@ class Singleton02{
  * 在多线程下，该方式不安全，同步效率太低了
  * 开发中，不推荐使用
  */
-class Singleton03{
-    private static Singleton03 instance ;
-    private Singleton03(){}
+class Singleton03 {
+    private static Singleton03 instance;
+
+    private Singleton03() {
+    }
+
     // 提供一个静态的公有方法，当使用该方法是=时，才会去创建instance
     // 即懒汉式
-    public static Singleton03 getInstance(){
-        if (null == instance){
+    public static Singleton03 getInstance() {
+        if (null == instance) {
             instance = new Singleton03();
         }
-        return instance ;
+        return instance;
     }
 }
 
@@ -76,34 +85,41 @@ class Singleton03{
  * 懒汉式（线程安全，同步方法）
  * 开发中，不推荐使用
  */
-class Singleton04{
-    private static Singleton04 instance ;
-    private Singleton04(){}
+class Singleton04 {
+    private static Singleton04 instance;
+
+    private Singleton04() {
+    }
+
     // 提供一个静态的公有方法，当使用该方法是=时，才会去创建instance
     // 即懒汉式
-    public static synchronized Singleton04 getInstance(){
-        if (null == instance){
+    public static synchronized Singleton04 getInstance() {
+        if (null == instance) {
             instance = new Singleton04();
         }
-        return instance ;
+        return instance;
     }
 }
+
 /**
  * 懒汉式（线程安全，同步代码块）
  * 开发中，不推荐使用
  */
-class Singleton05{
-    private static Singleton05 instance ;
-    private Singleton05(){}
+class Singleton05 {
+    private static Singleton05 instance;
+
+    private Singleton05() {
+    }
+
     // 提供一个静态的公有方法，当使用该方法是=时，才会去创建instance
     // 即懒汉式
-    public static Singleton05 getInstance(){
-        if (null == instance){
-            synchronized (Singleton05.class){
+    public static Singleton05 getInstance() {
+        if (null == instance) {
+            synchronized (Singleton05.class) {
                 instance = new Singleton05();
             }
         }
-        return instance ;
+        return instance;
     }
 }
 
@@ -116,20 +132,23 @@ class Singleton05{
  * 2. 实例化代码只用执行一次，后面再次访问时，判断 if (null == instance) , 直接 return 实例化对象，也避免了反复进行方法同步
  * 3. 线程安全，延迟加载，效率高
  */
-class Singleton06{
-    private static Singleton06 instance ;
-    private Singleton06(){}
+class Singleton06 {
+    private static Singleton06 instance;
+
+    private Singleton06() {
+    }
+
     // 提供一个静态的公有方法，当使用该方法是=时，才会去创建instance
     // 即懒汉式
-    public static Singleton06 getInstance(){
-        if (null == instance){
-            synchronized (Singleton06.class){
-                if (null == instance){
+    public static Singleton06 getInstance() {
+        if (null == instance) {
+            synchronized (Singleton06.class) {
+                if (null == instance) {
                     instance = new Singleton06();
                 }
             }
         }
-        return instance ;
+        return instance;
     }
 }
 
@@ -140,26 +159,32 @@ class Singleton06{
  * 4. 优点： 避免了线程不安全，利用静态内部类特点实现延迟加载，效率高
  * 5. 推荐使用
  */
-class Singleton07{
-    private static Singleton07 instance ;
-    private Singleton07(){}
+class Singleton07 {
+    private static Singleton07 instance;
+
+    private Singleton07() {
+    }
 
     // 写一个静态内部类，该类中有一个静态属性 Singleton07
-    private static class SingleInstance{
+    private static class SingleInstance {
         private static final Singleton07 SINGLETON_07 = new Singleton07();
     }
+
     // 提供一个静态的公有方法，直接返回实例
-    public static synchronized Singleton07 getInstance(){
-        return SingleInstance.SINGLETON_07 ;
+    public static synchronized Singleton07 getInstance() {
+        return SingleInstance.SINGLETON_07;
     }
 }
 
 /**
  * 推荐使用
  */
-enum  Singleton08{
-    INSTANCE ; // 属性
-    public void sayOK(){
+enum Singleton08 {
+    INSTANCE; // 属性
+
+    public void sayOK() {
         System.out.println("ok ~ ");
     }
 }
+
+
